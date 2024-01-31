@@ -1,57 +1,42 @@
-let computerPlay = getComputerChoice();
-let humanPlay = prompt("Rock, Paper or Scissors?");
+const buttons = document.querySelectorAll('button');
 
-console.log("You chose "+humanPlay);
-console.log("Computer chose "+computerPlay);
+buttons.forEach((button) =>{
+    button.addEventListener('click', () =>{
+        playRound(button.id);
+    });
+});
 
-humanPlay = humanPlay.toUpperCase();
+function playRound(playerSelection){
+    let computerPlay = getComputerChoice();
 
-if(humanPlay === "ROCK"){
-    if(computerPlay === "Rock"){
-        //console.log("You win!");
-        //console.log("You lose!");
-        console.log("It`s a Draw!");
-    }else if(computerPlay === "Paper"){
-        //console.log("You win!");
-        console.log("You lose!");
-        //console.log("It`s a Draw!");
+    if(playerSelection === "Rock"){
+        if(computerPlay === "Rock"){
+            console.log("It`s a Draw!");
+        }else if(computerPlay === "Paper"){
+            console.log("You lose!");
+        }else{
+            console.log("You win!");
+        }
+    }else if(playerSelection === "Paper"){
+        if(computerPlay === "Rock"){
+            console.log("You win!");
+        }else if(computerPlay === "Paper"){
+            console.log("It`s a Draw!");
+        }else{
+            console.log("You lose!");
+        }
+    }else if(playerSelection === "Scissors"){
+        if(computerPlay === "Rock"){
+            console.log("You lose!");
+        }else if(computerPlay === "Paper"){
+            console.log("You win!");
+        }else{
+            console.log("It`s a Draw!");
+        }
     }else{
-        console.log("You win!");
-        //console.log("You lose!");
-        //console.log("It`s a Draw!");
+        console.log("You did not wrote any of the correct options... :(");
     }
-}else if(humanPlay === "PAPER"){
-    if(computerPlay === "Rock"){
-        console.log("You win!");
-        //console.log("You lose!");
-        //console.log("It`s a Draw!");
-    }else if(computerPlay === "Paper"){
-        //console.log("You win!");
-        //console.log("You lose!");
-        console.log("It`s a Draw!");
-    }else{
-        //console.log("You win!");
-        console.log("You lose!");
-        //console.log("It`s a Draw!");
-    }
-}else if(humanPlay === "SCISSORS"){
-    if(computerPlay === "Rock"){
-        //console.log("You win!");
-        console.log("You lose!");
-        //console.log("It`s a Draw!");
-    }else if(computerPlay === "Paper"){
-        console.log("You win!");
-        //console.log("You lose!");
-        //console.log("It`s a Draw!");
-    }else{
-        //console.log("You win!");
-        //console.log("You lose!");
-        console.log("It`s a Draw!");
-    }
-}else{
-    console.log("You did not wrote any of the correct options... :(");
 }
-
 
 function getComputerChoice(){
     let seed = Math.random();
