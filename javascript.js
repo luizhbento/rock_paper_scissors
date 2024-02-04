@@ -2,55 +2,105 @@ const buttons = document.querySelectorAll("button");
 
 let humanScore = 0;
 let computerScore = 0;
+let roundCount = 0;
+
+const humanH4 = document.querySelector("#human_score");
+const computerH4 = document.querySelector("#computer_score");
+humanH4.textContent = humanScore;
+computerH4.textContent = computerScore;
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
-    if (humanScore + computerScore === 0) {
+    roundCount++;
+    if (roundCount === 1) {
       const results = document.querySelector("#results");
-      const content = document.createElement("h4");
+      const resultsTitle = document.createElement("h4");
+      const resultsHr = document.createElement("hr");
+      resultsTitle.textContent = "Results:";
+      results.appendChild(resultsHr);
+      results.appendChild(resultsTitle);
     }
 
-    if (humanScore <     5 && computerScore < 5) {
-      content = document.createElement("div");
-      content.classList.add("result");
-      content.textContent = playRound(button.id);
+    if (humanScore < 5 && computerScore < 5) {
+      const content = document.createElement("div");
+      const contentText = document.createTextNode(playRound(button.id));
+      const boldRound = document.createElement("b");
+      boldRound.textContent = "Round " + roundCount + " : ";
+      content.appendChild(boldRound);
+      content.appendChild(contentText);
       results.appendChild(content);
     } else {
     }
+
+    if (humanScore === 5 || computerScore === 5) {
+      const boldResult = document.createElement("b");
+      const lineBreak = document.createElement("br");
+      if (humanScore === 5) {
+        boldResult.textContent = "Game Over! You Won! Congrats!";
+      } else {
+        boldResult.textContent = "Game Over! You Lose! Try Again Later!";
+      }
+      results.appendChild(lineBreak);
+      results.appendChild(boldResult);
+
+      const buttonsEnd = document.querySelectorAll("button");
+      buttonsEnd.forEach((buttonEnd) => {
+        buttonEnd.disabled = true;
+      });
+    }
+
+    humanH4.textContent = humanScore;
+    computerH4.textContent = computerScore;
   });
 });
 
 function playRound(playerSelection) {
-  let computerPlay = getComputerChoice();
+  let computerSelection = getComputerChoice();
 
   if (playerSelection === "Rock") {
-    if (computerPlay === "Rock") {
-      return "It`s a Draw!";
-    } else if (computerPlay === "Paper") {
-      return "You lose!";
+    if (computerSelection === "Rock") {
+      return (
+        resultsDisplay(playerSelection, computerSelection) + ". It`s a Draw!"
+      );
+    } else if (computerSelection === "Paper") {
+      computerScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You lose!";
     } else {
-      return "You win!";
+      humanScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You win!";
     }
   } else if (playerSelection === "Paper") {
-    if (computerPlay === "Rock") {
-      return "You win!";
-    } else if (computerPlay === "Paper") {
-      return "It`s a Draw!";
+    if (computerSelection === "Rock") {
+      humanScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You win!";
+    } else if (computerSelection === "Paper") {
+      return (
+        resultsDisplay(playerSelection, computerSelection) + ". It`s a Draw!"
+      );
     } else {
-      return "You lose!";
+      computerScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You lose!";
     }
   } else if (playerSelection === "Scissors") {
-    if (computerPlay === "Rock") {
-      return "You lose!";
-    } else if (computerPlay === "Paper") {
-      return "You win!";
+    if (computerSelection === "Rock") {
+      computerScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You lose!";
+    } else if (computerSelection === "Paper") {
+      humanScore++;
+      return resultsDisplay(playerSelection, computerSelection) + ". You win!";
     } else {
-      return "It`s a Draw!";
+      return (
+        resultsDisplay(playerSelection, computerSelection) + ". It`s a Draw!"
+      );
     }
-  } else {
-    return "You did not wrote any of the correct options... :(";
   }
 }
+
+const resultsDisplay = (playerSelection, computerSelection) => {
+  return (
+    "You chose " + playerSelection + ", Computer chose " + computerSelection
+  );
+};
 
 function getComputerChoice() {
   let seed = Math.random();
